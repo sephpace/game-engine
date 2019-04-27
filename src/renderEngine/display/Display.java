@@ -5,6 +5,7 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 import renderEngine.VAO;
+import renderEngine.VBO;
 import renderEngine.shading.FragmentShader;
 import renderEngine.shading.ShaderProgram;
 
@@ -93,10 +94,7 @@ public class Display {
         // Set the clear color
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-        // Set up the display vao
-        // TODO: Replace this code with object oriented vao code at some point
-        Buffer[] buffers = new Buffer[1];
-        int[] sizes = new int[1];
+        // Set up the VBO data
         float[] vertices = {
                 -1f, 1f, 0f, 1f,
                 -1f, -1f, 0f, 1f,
@@ -105,22 +103,18 @@ public class Display {
                 1f, 1f, 0f, 1f,
                 -1f, 1f, 0f, 1f
         };
-        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
-        verticesBuffer.put(vertices);
-        verticesBuffer.flip();
-        buffers[0] = verticesBuffer;
-        sizes[0] = 4;
 
 //        byte[] indices = {
 //                0, 1, 2,
 //                2, 3, 0
 //        };
-//        ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indices.length);
-//        indicesBuffer.put(indices);
-//        indicesBuffer.flip();
-//        buffers[1] = indicesBuffer;
 
-        displayQuad = new VAO(buffers, sizes, 6);
+        // Set up the VBOs
+        VBO[] vbos = {new VBO("position", vertices, 4, 6)};
+//        VBO indexVBO = new VBO("vertex", indices, 3, 2);
+
+        // Create the display VAO
+        displayQuad = new VAO(vbos);
 
         // Set up the main shader program
         FragmentShader fragmentShader = new FragmentShader("fragment.glsl");
