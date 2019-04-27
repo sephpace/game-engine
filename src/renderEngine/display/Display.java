@@ -1,14 +1,17 @@
 package renderEngine.display;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
+import renderEngine.VAO;
+import renderEngine.shading.FragmentShader;
+import renderEngine.shading.ShaderProgram;
 
 import java.nio.*;
 
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
@@ -22,6 +25,11 @@ public class Display {
 
     // The window handle
     private long window;
+
+    private VAO displayQuad;
+
+    // The main shader program for the display
+    private ShaderProgram shaderProgram;
 
     /**
      * Constructor.
@@ -43,7 +51,7 @@ public class Display {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
 
         // Create the window
-        this.window = glfwCreateWindow(width, height, "Hello World!", NULL, NULL);
+        this.window = glfwCreateWindow(width, height, "Game Engine", NULL, NULL);
         if(window == NULL) {
             throw new RuntimeException("Failed to create the GLFW window");
         }
@@ -83,13 +91,53 @@ public class Display {
         GL.createCapabilities();
 
         // Set the clear color
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+
+        // Set up the display vao
+        // TODO: Replace this code with object oriented vao code at some point
+        Buffer[] buffers = new Buffer[1];
+        int[] sizes = new int[1];
+        float[] vertices = {
+                -1f, 1f, 0f, 1f,
+                -1f, -1f, 0f, 1f,
+                1f, -1f, 0f, 1f,
+                1f, -1f, 0f, 1f,
+                1f, 1f, 0f, 1f,
+                -1f, 1f, 0f, 1f
+        };
+        FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length);
+        verticesBuffer.put(vertices);
+        verticesBuffer.flip();
+        buffers[0] = verticesBuffer;
+        sizes[0] = 4;
+
+//        byte[] indices = {
+//                0, 1, 2,
+//                2, 3, 0
+//        };
+//        ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indices.length);
+//        indicesBuffer.put(indices);
+//        indicesBuffer.flip();
+//        buffers[1] = indicesBuffer;
+
+        displayQuad = new VAO(buffers, sizes, 6);
+
+        // Set up the main shader program
+        FragmentShader fragmentShader = new FragmentShader("fragment.glsl");
+        String[] programInputs = {};
+        shaderProgram = new ShaderProgram(fragmentShader, programInputs);
     }
 
     /**
      * Cleans up the display by terminating GLFW.
      */
     public void cleanup() {
+        // Clean up the shader program
+        shaderProgram.cleanup();
+
+        // Clean up the display quad
+        displayQuad.cleanup();
+
         // Free the window callbacks and destroy the window
         glfwFreeCallbacks(window);
         glfwDestroyWindow(window);
@@ -113,7 +161,16 @@ public class Display {
      */
     public void update() {
         // Clear the framebuffer
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
+        // Use the shader program
+//        GL20.glUseProgram(shaderProgram.getID());
+
+        // Draw the display quad on the screen
+        displayQuad.render();
+
+        // Return everything to default
+//        GL20.glUseProgram(0);
 
         // Swap the color buffers
         glfwSwapBuffers(window);
