@@ -58,7 +58,22 @@ public class VAO {
         GL30.glDeleteVertexArrays(this.id);
     }
 
+    /**
+     * Returns the ID of the VAO.
+     *
+     * @return The ID of the VAO
+     */
+    public int getID() {return this.id;}
+
+    /**
+     * Returns the amount of VBOs contained in the VAO.
+     *
+     * @return The amount of VBOs contained in the VAO
+     */
+    public int getVBOCount() {return this.vbos.length;}
+
     public void render() {
+        // TODO: Delete this method if I find out I don't need it later
         // Bind the VAO
         GL30.glBindVertexArray(this.id);
 

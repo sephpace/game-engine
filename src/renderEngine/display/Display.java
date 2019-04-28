@@ -1,12 +1,11 @@
 package renderEngine.display;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 import renderEngine.VAO;
 import renderEngine.VBO;
-import renderEngine.shading.FragmentShader;
+import renderEngine.shading.Shader;
 import renderEngine.shading.ShaderProgram;
 
 import java.nio.*;
@@ -27,7 +26,11 @@ public class Display {
     // The window handle
     private long window;
 
+    // The VAO for displaying the ray marched pixels
     private VAO displayQuad;
+
+    // The indices of the quad
+    private VBO indicesVBO;
 
     // The main shader program for the display
     private ShaderProgram shaderProgram;
@@ -99,27 +102,34 @@ public class Display {
                 -1f, 1f, 0f, 1f,
                 -1f, -1f, 0f, 1f,
                 1f, -1f, 0f, 1f,
-                1f, -1f, 0f, 1f,
-                1f, 1f, 0f, 1f,
-                -1f, 1f, 0f, 1f
+                1f, 1f, 0f, 1f
         };
 
-//        byte[] indices = {
-//                0, 1, 2,
-//                2, 3, 0
-//        };
+        float[] colors = {
+                1f, 0f, 0f, 1f,
+                0f, 1f, 0f, 1f,
+                0f, 0f, 1f, 1f,
+                1f, 1f, 1f, 1f
+        };
+
+        byte[] indices = {
+                0, 1, 2,
+                2, 3, 0
+        };
 
         // Set up the VBOs
-        VBO[] vbos = {new VBO("position", vertices, 4, 6)};
-//        VBO indexVBO = new VBO("vertex", indices, 3, 2);
+        VBO[] vbos = {new VBO("position", vertices, 4, 4),
+                      new VBO("color", colors, 4, 4)};
+        indicesVBO = new VBO("vertex", indices, 1, 6);
 
         // Create the display VAO
         displayQuad = new VAO(vbos);
 
         // Set up the main shader program
-        FragmentShader fragmentShader = new FragmentShader("fragment.glsl");
-        String[] programInputs = {};
-        shaderProgram = new ShaderProgram(fragmentShader, programInputs);
+        Shader[] shaders = {new Shader("vertex.glsl", GL20.GL_VERTEX_SHADER),
+                            new Shader("fragment.glsl", GL20.GL_FRAGMENT_SHADER)};
+        String[] programInputs = {"in_Position", "in_Color"};
+        shaderProgram = new ShaderProgram(shaders, programInputs);
     }
 
     /**
@@ -131,6 +141,7 @@ public class Display {
 
         // Clean up the display quad
         displayQuad.cleanup();
+        indicesVBO.cleanup();
 
         // Free the window callbacks and destroy the window
         glfwFreeCallbacks(window);
@@ -158,13 +169,22 @@ public class Display {
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
         // Use the shader program
-//        GL20.glUseProgram(shaderProgram.getID());
+        GL20.glUseProgram(shaderProgram.getID());
 
         // Draw the display quad on the screen
-        displayQuad.render();
+//        displayQuad.render();
+        GL30.glBindVertexArray(displayQuad.getID());
+        GL20.glEnableVertexAttribArray(0);
+        GL20.glEnableVertexAttribArray(1);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesVBO.getID());
+        GL11.glDrawElements(GL15.GL_TRIANGLES, indicesVBO.getVertexCount(), GL11.GL_UNSIGNED_BYTE, 0);
 
         // Return everything to default
-//        GL20.glUseProgram(0);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+        GL20.glDisableVertexAttribArray(0);
+        GL20.glDisableVertexAttribArray(1);
+        GL30.glBindVertexArray(0);
+        GL20.glUseProgram(0);
 
         // Swap the color buffers
         glfwSwapBuffers(window);
