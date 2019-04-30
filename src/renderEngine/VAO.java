@@ -1,6 +1,5 @@
 package renderEngine;
 
-import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
@@ -71,27 +70,4 @@ public class VAO {
      * @return The amount of VBOs contained in the VAO
      */
     public int getVBOCount() {return this.vbos.length;}
-
-    public void render() {
-        // TODO: Delete this method if I find out I don't need it later
-        // Bind the VAO
-        GL30.glBindVertexArray(this.id);
-
-        // Render vertices contained in VBOs of type "position"
-        for(int i = 0; i < this.vbos.length; i++) {
-            if(this.vbos[i].getType().equals("position")) {
-                // Enable the VAO index
-                GL20.glEnableVertexAttribArray(i);
-
-                // Draw the vertices
-                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, this.vbos[i].getVertexCount());
-
-                // Disable the VAO index
-                GL20.glDisableVertexAttribArray(i);
-            }
-        }
-
-        // Unbind the VAO
-        GL30.glBindVertexArray(0);
-    }
 }

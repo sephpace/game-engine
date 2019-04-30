@@ -15,7 +15,7 @@ import java.nio.*;
 public class VBO {
 
     // The type of data in the VBO
-    private int dataType;
+    private int type;
 
     // The ID of the VBO
     private int id;
@@ -23,24 +23,19 @@ public class VBO {
     // The size of each vector (either 2, 3, or 4)
     private int size;
 
-    // The type of VBO ("position", "color", etc)
-    private String type;
-
     // The amount of vertices in the VBO
     private int vertexCount;
 
     /**
      * Constructor.  Creates a VBO of bytes.
      *
-     * @param type        The type of VBO ("position", "color", etc)
      * @param bufferData  The data to be stored in the VBO
      * @param size        The size of each vector (either 2, 3, or 4)
      * @param vertexCount The amount of vertices in the VBO
      */
-    public VBO(String type, byte[] bufferData, int size, int vertexCount) {
-        this.dataType = GL11.GL_BYTE;
+    public VBO(byte[] bufferData, int size, int vertexCount) {
+        this.type = GL11.GL_BYTE;
         this.size = size;
-        this.type = type;
         this.vertexCount = vertexCount;
 
         // Create and bind the VBO
@@ -62,15 +57,13 @@ public class VBO {
     /**
      * Constructor.  Creates a VBO of doubles.
      *
-     * @param type        The type of VBO ("position", "color", etc)
      * @param bufferData  The data to be stored in the VBO
      * @param size        The size of each vector (either 2, 3, or 4)
      * @param vertexCount The amount of vertices in the VBO
      */
-    public VBO(String type, double[] bufferData, int size, int vertexCount) {
-        this.dataType = GL11.GL_DOUBLE;
+    public VBO(double[] bufferData, int size, int vertexCount) {
+        this.type = GL11.GL_DOUBLE;
         this.size = size;
-        this.type = type;
         this.vertexCount = vertexCount;
 
         // Create and bind the VBO
@@ -92,15 +85,13 @@ public class VBO {
     /**
      * Constructor.  Creates a VBO of floats.
      *
-     * @param type        The type of VBO ("position", "color", etc)
      * @param bufferData  The data to be stored in the VBO
      * @param size        The size of each vector (either 2, 3, or 4)
      * @param vertexCount The amount of vertices in the VBO
      */
-    public VBO(String type, float[] bufferData, int size, int vertexCount) {
-        this.dataType = GL11.GL_FLOAT;
+    public VBO(float[] bufferData, int size, int vertexCount) {
+        this.type = GL11.GL_FLOAT;
         this.size = size;
-        this.type = type;
         this.vertexCount = vertexCount;
 
         // Create and bind the VBO
@@ -122,15 +113,13 @@ public class VBO {
     /**
      * Constructor.  Creates a VBO of ints.
      *
-     * @param type        The type of VBO ("position", "color", etc)
      * @param bufferData  The data to be stored in the VBO
      * @param size        The size of each vector (either 2, 3, or 4)
      * @param vertexCount The amount of vertices in the VBO
      */
-    public VBO(String type, int[] bufferData, int size, int vertexCount) {
-        this.dataType = GL11.GL_INT;
+    public VBO(int[] bufferData, int size, int vertexCount) {
+        this.type = GL11.GL_INT;
         this.size = size;
-        this.type = type;
         this.vertexCount = vertexCount;
 
         // Create and bind the VBO
@@ -159,7 +148,7 @@ public class VBO {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, this.id);
 
         // Add the VBO to the VAO
-        GL20.glVertexAttribPointer(index, this.size, this.dataType, false, 0, 0);
+        GL20.glVertexAttribPointer(index, this.size, this.type, false, 0, 0);
 
         // Unbind the VBO
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
@@ -177,13 +166,6 @@ public class VBO {
     }
 
     /**
-     * Returns the data type of the data in the VBO.
-     *
-     * @return The data type of the data in the VBO
-     */
-    public int getDataType() {return this.dataType;}
-
-    /**
      * Returns the ID of the VBO.
      *
      * @return The ID of the VBO
@@ -198,11 +180,11 @@ public class VBO {
     public int getSize() {return this.size;}
 
     /**
-     * Returns the type of the VBO.
+     * Returns the data type of the VBO.
      *
-     * @return The type of the VBO
+     * @return The data type of the VBO
      */
-    public String getType() {return this.type;}
+    public int getType() {return this.type;}
 
     /**
      * Returns the amount of vertices in the VBO.

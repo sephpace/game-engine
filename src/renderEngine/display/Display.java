@@ -3,6 +3,7 @@ package renderEngine.display;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
+import renderEngine.Texture;
 import renderEngine.VAO;
 import renderEngine.VBO;
 import renderEngine.shading.Shader;
@@ -34,6 +35,9 @@ public class Display {
 
     // The main shader program for the display
     private ShaderProgram shaderProgram;
+
+    // The texture used by the shaders each fram
+    private Texture texture;
 
     /**
      * Constructor.
@@ -105,11 +109,11 @@ public class Display {
                 1f, 1f, 0f, 1f
         };
 
-        float[] colors = {
-                1f, 0f, 0f, 1f,
-                0f, 1f, 0f, 1f,
-                0f, 0f, 1f, 1f,
-                1f, 1f, 1f, 1f
+        float[] textureCoords = {
+                0f, 0f,
+                0f, 1f,
+                1f, 1f,
+                1f, 0f
         };
 
         byte[] indices = {
@@ -118,24 +122,30 @@ public class Display {
         };
 
         // Set up the VBOs
-        VBO[] vbos = {new VBO("position", vertices, 4, 4),
-                      new VBO("color", colors, 4, 4)};
-        indicesVBO = new VBO("vertex", indices, 1, 6);
+        VBO[] vbos = {new VBO(vertices, 4, 4),
+                      new VBO(textureCoords, 2, 4)};
+        indicesVBO = new VBO(indices, 1, 6);
 
         // Create the display VAO
         displayQuad = new VAO(vbos);
 
+        // Set up the texture
+        texture = new Texture("weird_smile.png");
+
         // Set up the main shader program
         Shader[] shaders = {new Shader("vertex.glsl", GL20.GL_VERTEX_SHADER),
                             new Shader("fragment.glsl", GL20.GL_FRAGMENT_SHADER)};
-        String[] programInputs = {"in_Position", "in_Color"};
+        String[] programInputs = {"in_Position", "in_TextureCoord"};
         shaderProgram = new ShaderProgram(shaders, programInputs);
     }
 
     /**
-     * Cleans up the display by terminating GLFW.
+     * Cleans up the display and all of the openGL objects associated with it.
      */
     public void cleanup() {
+        // Clean up the texure
+        texture.cleanup();
+
         // Clean up the shader program
         shaderProgram.cleanup();
 
@@ -171,8 +181,11 @@ public class Display {
         // Use the shader program
         GL20.glUseProgram(shaderProgram.getID());
 
+        // Bind the texture
+        GL13.glActiveTexture(GL13.GL_TEXTURE0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
+
         // Draw the display quad on the screen
-//        displayQuad.render();
         GL30.glBindVertexArray(displayQuad.getID());
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
@@ -184,6 +197,7 @@ public class Display {
         GL20.glDisableVertexAttribArray(0);
         GL20.glDisableVertexAttribArray(1);
         GL30.glBindVertexArray(0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         GL20.glUseProgram(0);
 
         // Swap the color buffers
