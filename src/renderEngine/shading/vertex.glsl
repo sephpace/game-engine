@@ -1,11 +1,16 @@
 #version 150 core
 
-in vec4 in_Position;
-in vec2 in_TextureCoord;
+// VERTEX SHADER
 
-out vec2 pass_TextureCoord;
 
+// The position of each vertex in the quad.
+in vec4 vertex_Position;
+
+// The position of each pixel of the screen.
+out vec4 uv;
+
+// Main method
 void main(void) {
-    gl_Position = in_Position;
-    pass_TextureCoord = in_TextureCoord;
+    gl_Position = vertex_Position;
+    uv = vertex_Position;
 }

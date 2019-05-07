@@ -36,9 +36,6 @@ public class Display {
     // The main shader program for the display
     private ShaderProgram shaderProgram;
 
-    // The texture used by the shaders each fram
-    private Texture texture;
-
     /**
      * Constructor.
      *
@@ -109,33 +106,22 @@ public class Display {
                 1f, 1f, 0f, 1f
         };
 
-        float[] textureCoords = {
-                0f, 0f,
-                0f, 1f,
-                1f, 1f,
-                1f, 0f
-        };
-
         byte[] indices = {
                 0, 1, 2,
                 2, 3, 0
         };
 
         // Set up the VBOs
-        VBO[] vbos = {new VBO(vertices, 4, 4),
-                      new VBO(textureCoords, 2, 4)};
+        VBO[] vbos = {new VBO(vertices, 4, 4)};
         indicesVBO = new VBO(indices, 1, 6);
 
         // Create the display VAO
         displayQuad = new VAO(vbos);
 
-        // Set up the texture
-        texture = new Texture("weird_smile.png");
-
         // Set up the main shader program
         Shader[] shaders = {new Shader("vertex.glsl", GL20.GL_VERTEX_SHADER),
                             new Shader("fragment.glsl", GL20.GL_FRAGMENT_SHADER)};
-        String[] programInputs = {"in_Position", "in_TextureCoord"};
+        String[] programInputs = {"vertex_Position", "screen_Position"};
         shaderProgram = new ShaderProgram(shaders, programInputs);
     }
 
@@ -143,9 +129,6 @@ public class Display {
      * Cleans up the display and all of the openGL objects associated with it.
      */
     public void cleanup() {
-        // Clean up the texure
-        texture.cleanup();
-
         // Clean up the shader program
         shaderProgram.cleanup();
 
@@ -181,23 +164,19 @@ public class Display {
         // Use the shader program
         GL20.glUseProgram(shaderProgram.getID());
 
-        // Bind the texture
-        GL13.glActiveTexture(GL13.GL_TEXTURE0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture.getID());
+        // Pass the uniforms to the shader program
+
 
         // Draw the display quad on the screen
         GL30.glBindVertexArray(displayQuad.getID());
         GL20.glEnableVertexAttribArray(0);
-        GL20.glEnableVertexAttribArray(1);
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesVBO.getID());
         GL11.glDrawElements(GL15.GL_TRIANGLES, indicesVBO.getVertexCount(), GL11.GL_UNSIGNED_BYTE, 0);
 
         // Return everything to default
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
         GL20.glDisableVertexAttribArray(0);
-        GL20.glDisableVertexAttribArray(1);
         GL30.glBindVertexArray(0);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         GL20.glUseProgram(0);
 
         // Swap the color buffers
