@@ -13,7 +13,7 @@ float MAX_DISTANCE = 100.0;
 float MIN_SURFACE_DISTANCE = 0.01;
 
 // The positions of each pixel of the screen.
-in vec4 uv;
+in vec2 uv;
 
 // The color of each pixel of the screen
 out vec4 color;

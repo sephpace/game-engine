@@ -24,6 +24,12 @@ import static org.lwjgl.system.MemoryUtil.*;
  */
 public class Display {
 
+    // The width of the display in pixels
+    private float width;
+
+    // The height of the display in pixels
+    private float height;
+
     // The window handle
     private long window;
 
@@ -43,6 +49,9 @@ public class Display {
      * @param height The height of the display window
      */
     public Display(int width, int height) {
+        this.width = width;
+        this.height = height;
+
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
         GLFWErrorCallback.createPrint(System.err).set();
@@ -165,7 +174,10 @@ public class Display {
         GL20.glUseProgram(shaderProgram.getID());
 
         // Pass the uniforms to the shader program
-
+        int widthLoc = GL20.glGetUniformLocation(shaderProgram.getID(), "screen_Width");
+        GL20.glUniform1f(widthLoc, this.width);
+        int heightLoc = GL20.glGetUniformLocation(shaderProgram.getID(), "screen_Height");
+        GL20.glUniform1f(heightLoc, this.height);
 
         // Draw the display quad on the screen
         GL30.glBindVertexArray(displayQuad.getID());

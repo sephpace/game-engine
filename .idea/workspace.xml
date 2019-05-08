@@ -2,13 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a42db7c1-34c3-4191-84c5-fe2e569fcee4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/GameEngine/renderEngine/display/Display.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameEngine/renderEngine/display/Display.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/GameEngine/renderEngine/shading/fragment.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameEngine/renderEngine/shading/fragment.glsl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/GameEngine/renderEngine/shading/vertex.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/GameEngine/renderEngine/shading/vertex.glsl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/GameEngine/weird_smile.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/res/weird_smile.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/GameLoop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/GameLoop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderEngine/display/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderEngine/display/Display.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderEngine/shading/fragment.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderEngine/shading/fragment.glsl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/renderEngine/shading/vertex.glsl" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderEngine/shading/vertex.glsl" afterDir="false" />
@@ -28,10 +26,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/renderEngine/display/Display.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="114" column="46" selection-start-line="114" selection-start-column="46" selection-end-line="114" selection-end-column="46" />
+            <state relative-caret-position="41">
+              <caret line="177" column="45" selection-start-line="177" selection-start-column="45" selection-end-line="177" selection-end-column="45" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#4702#4703#0" expanded="true" />
                 <element signature="e#4754#4755#0" expanded="true" />
               </folding>
             </state>
@@ -39,10 +38,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/GameLoop.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="47" selection-start-line="17" selection-start-column="47" selection-end-line="17" selection-end-column="47" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/renderEngine/shading/fragment.glsl">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="672">
-              <caret line="53" column="40" selection-start-line="53" selection-start-column="40" selection-end-line="53" selection-end-column="40" />
+            <state relative-caret-position="255">
+              <caret line="15" column="7" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
             </state>
           </provider>
         </entry>
@@ -50,8 +58,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/renderEngine/shading/vertex.glsl">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="12" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
+            <state relative-caret-position="102">
+              <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -99,10 +107,10 @@
         <option value="$PROJECT_DIR$/src/renderEngine/VAO.java" />
         <option value="$PROJECT_DIR$/src/renderEngine/Texture.java" />
         <option value="$PROJECT_DIR$/src/renderEngine/Display.java" />
-        <option value="$PROJECT_DIR$/src/main/GameLoop.java" />
+        <option value="$PROJECT_DIR$/src/renderEngine/shading/fragment.glsl" />
         <option value="$PROJECT_DIR$/src/renderEngine/display/Display.java" />
         <option value="$PROJECT_DIR$/src/renderEngine/shading/vertex.glsl" />
-        <option value="$PROJECT_DIR$/src/renderEngine/shading/fragment.glsl" />
+        <option value="$PROJECT_DIR$/src/main/GameLoop.java" />
       </list>
     </option>
   </component>
@@ -118,7 +126,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -154,6 +161,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -207,8 +215,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1296" height="1000" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25809062" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26618123" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -217,7 +226,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3289689" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32871974" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32871974" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39934534" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -253,9 +262,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/weird_smile.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/res/weird_smile.png" />
     <entry file="file://$PROJECT_DIR$/src/renderEngine/Texture.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -292,16 +299,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderEngine/Display.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="59" lean-forward="true" selection-start-line="59" selection-end-line="59" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderEngine/Display.java" />
     <entry file="file://$PROJECT_DIR$/src/renderEngine/VAO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-102">
@@ -312,35 +310,36 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/GameLoop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="17" column="47" selection-start-line="17" selection-start-column="47" selection-end-line="17" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/renderEngine/shading/vertex.glsl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="12" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/renderEngine/display/Display.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="114" column="46" selection-start-line="114" selection-start-column="46" selection-end-line="114" selection-end-column="46" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4754#4755#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="102">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/renderEngine/shading/fragment.glsl">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="53" column="40" selection-start-line="53" selection-start-column="40" selection-end-line="53" selection-end-column="40" />
+        <state relative-caret-position="255">
+          <caret line="15" column="7" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/renderEngine/display/Display.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="41">
+          <caret line="177" column="45" selection-start-line="177" selection-start-column="45" selection-end-line="177" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4702#4703#0" expanded="true" />
+            <element signature="e#4754#4755#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/GameLoop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="47" selection-start-line="17" selection-start-column="47" selection-end-line="17" selection-end-column="47" />
         </state>
       </provider>
     </entry>
