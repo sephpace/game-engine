@@ -1,3 +1,6 @@
 *.iml
 .idea
 out
+venv
+*.pyc
+__pycache__
