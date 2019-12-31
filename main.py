@@ -49,4 +49,10 @@ def on_key_release(symbol, modifiers):
         camera.velocity += np.array([0.0, +SPEED, 0.0])  # Down
 
 
+@window.event
+def on_mouse_motion(x, y, dx, dy):
+    camera.direction += np.array([dx, -dy]) * np.pi / 500
+    # TODO: Find a way to stop the cursor from moving off the screen
+
+
 app.run()

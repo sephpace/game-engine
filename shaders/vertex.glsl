@@ -5,7 +5,7 @@ attribute vec2 position;
 // The position of each corner of the screen in 3D space
 attribute vec3 corner;
 
-// The direction between the camera and each pixel of the screen
+// The direction of each ray
 varying vec3 direction;
 
 // The position of the camera
