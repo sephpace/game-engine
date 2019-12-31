@@ -1,6 +1,7 @@
 
 from abc import ABC
 
+from glumpy import gl, gloo
 import numpy as np
 
 from constants import SCREEN_WIDTH, SCREEN_HEIGHT, ZOOM
@@ -45,7 +46,7 @@ class Camera(Entity):
     Used as the origin point in ray marching.
     """
 
-    def __init__(self, position=np.zeros(3), velocity=np.zeros(3), rotation=np.zeros(3), zoom=ZOOM):
+    def __init__(self, position=np.zeros(3), velocity=np.zeros(3), rotation=np.zeros(3), zoom=ZOOM, width=SCREEN_WIDTH, height=SCREEN_HEIGHT):
         """
         Constructor.
 
@@ -56,35 +57,26 @@ class Camera(Entity):
         """
         super(Camera, self).__init__(position, velocity, rotation)
         self.zoom = zoom
-        self.__screen = np.array([[-SCREEN_WIDTH / 2, -SCREEN_HEIGHT / 2, self.zoom],
-                                  [-SCREEN_WIDTH / 2, +SCREEN_HEIGHT / 2, self.zoom],
-                                  [+SCREEN_WIDTH / 2, -SCREEN_HEIGHT / 2, self.zoom],
-                                  [+SCREEN_WIDTH / 2, +SCREEN_HEIGHT / 2, self.zoom]])
+        self.width = width
+        self.height = height
 
-    def get_screen(self):
-        screen = self.__screen.copy()
-        rm = rot_mat(self.rotation)
-        for i in range(len(screen)):
-            screen[i] = np.matmul(rm, screen[i])
-        screen += self.position
-        return screen
+        # Setup shader program
+        with open('shaders/vertex.glsl') as file:
+            vertex = file.read()
+        with open('shaders/fragment.glsl') as file:
+            fragment = file.read()
+        self.screen = gloo.Program(vertex, fragment, count=4)
+        self.screen['position'] = [(-1.0, -1.0),
+                                   (-1.0, +1.0),
+                                   (+1.0, -1.0),
+                                   (+1.0, +1.0)]
+        self.screen['corner'] = np.array([[-width / 2, -height / 2, self.zoom],
+                                          [-width / 2, +height / 2, self.zoom],
+                                          [+width / 2, -height / 2, self.zoom],
+                                          [+width / 2, +height / 2, self.zoom]])
 
-
-def rot_mat(rot):
-    a, b, c = rot
-    return np.matmul(np.matmul(rz(c), ry(b)), rx(a))
-
-
-def rx(theta):
-    sin, cos = np.sin(theta), np.cos(theta)
-    return np.array([[1, 0, 0], [0, cos, -sin], [0, sin, cos]])
-
-
-def ry(theta):
-    sin, cos = np.sin(theta), np.cos(theta)
-    return np.array([[cos, 0, sin], [0, 1, 0], [-sin, 0, cos]])
-
-
-def rz(theta):
-    sin, cos = np.sin(theta), np.cos(theta)
-    return np.array([[cos, -sin, 0], [sin, cos, 0], [0, 0, 1]])
+    def update(self, delta):
+        super(Camera, self).update(delta)
+        self.screen['camera'] = self.position
+        self.screen['rotation'] = self.rotation
+        self.screen.draw(gl.GL_TRIANGLE_STRIP)

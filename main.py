@@ -1,5 +1,5 @@
 
-from glumpy import app, gloo, gl
+from glumpy import app, gl
 from pyglet.window import key
 import numpy as np
 
@@ -8,30 +8,13 @@ from constants import WINDOW_WIDTH, WINDOW_HEIGHT, SPEED
 
 window = app.Window(WINDOW_WIDTH, WINDOW_HEIGHT)
 
-with open('shaders/vertex.glsl') as file:
-    vertex = file.read()
-
-with open('shaders/fragment.glsl') as file:
-    fragment = file.read()
-
-quad = gloo.Program(vertex, fragment, count=4)
-
-quad['position'] = [(-1.0, -1.0),
-                    (-1.0, +1.0),
-                    (+1.0, -1.0),
-                    (+1.0, +1.0)]
-
 camera = Camera(position=np.array([0.0, 0.0, -5.0]))
 
 
 @window.event
 def on_draw(dt):
-    camera.update(dt)
-    quad['camera'] = camera.position
-    quad['screen_Position'] = camera.get_screen()
-
     window.clear()
-    quad.draw(gl.GL_TRIANGLE_STRIP)
+    camera.update(dt)
 
 
 @window.event
