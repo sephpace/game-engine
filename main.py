@@ -1,16 +1,10 @@
 
 from glumpy import app, gloo, gl
 from pyglet.window import key
+import numpy as np
 
-WINDOW_WIDTH = 700
-WINDOW_HEIGHT = 500
-
-SCREEN_WIDTH = WINDOW_WIDTH / 200
-SCREEN_HEIGHT = WINDOW_HEIGHT / 200
-
-ZOOM = 7
-
-SPEED = 0.1
+from entity import Camera
+from constants import WINDOW_WIDTH, WINDOW_HEIGHT, SPEED
 
 window = app.Window(WINDOW_WIDTH, WINDOW_HEIGHT)
 
@@ -27,32 +21,14 @@ quad['position'] = [(-1.0, -1.0),
                     (+1.0, -1.0),
                     (+1.0, +1.0)]
 
-velocity = (0.0, 0.0, 0.0)
-
-
-def set_pos(pos):
-    quad['camera'] = pos
-    x, y, z = pos
-    quad['screen_Position'] = [(x - SCREEN_WIDTH, y - SCREEN_HEIGHT, z + ZOOM),
-                               (x - SCREEN_WIDTH, y + SCREEN_HEIGHT, z + ZOOM),
-                               (x + SCREEN_WIDTH, y - SCREEN_HEIGHT, z + ZOOM),
-                               (x + SCREEN_WIDTH, y + SCREEN_HEIGHT, z + ZOOM)]
-
-
-def set_volocity(v):
-    global velocity
-    velocity = v
-
-
-set_pos((0, 0, -5))
+camera = Camera(position=np.array([0.0, 0.0, -5.0]))
 
 
 @window.event
 def on_draw(dt):
-    global velocity
-    x, y, z = quad['camera']
-    vx, vy, vz = velocity
-    set_pos((x + vx, y + vy, z + vz))
+    camera.update(dt)
+    quad['camera'] = camera.position
+    quad['screen_Position'] = camera.get_screen()
 
     window.clear()
     quad.draw(gl.GL_TRIANGLE_STRIP)
@@ -60,38 +36,34 @@ def on_draw(dt):
 
 @window.event
 def on_key_press(symbol, modifiers):
-    global velocity
-    x, y, z = velocity
     if symbol == key.W:
-        velocity = (x, y, z + SPEED)  # Forward
+        camera.velocity += np.array([0.0, 0.0, +SPEED])  # Forward
     elif symbol == key.A:
-        velocity = (x - SPEED, y, z)  # Left
+        camera.velocity += np.array([-SPEED, 0.0, 0.0])  # Left
     elif symbol == key.S:
-        velocity = (x, y, z - SPEED)  # Backward
+        camera.velocity += np.array([0.0, 0.0, -SPEED])  # Backward
     elif symbol == key.D:
-        velocity = (x + SPEED, y, z)  # Right
+        camera.velocity += np.array([+SPEED, 0.0, 0.0])  # Right
     elif symbol == key.SPACE:
-        velocity = (x, y + SPEED, z)  # Up
+        camera.velocity += np.array([0.0, +SPEED, 0.0])  # Up
     elif symbol == key.LSHIFT:
-        velocity = (x, y - SPEED, z)  # Down
+        camera.velocity += np.array([0.0, -SPEED, 0.0])  # Down
 
 
 @window.event
 def on_key_release(symbol, modifiers):
-    global velocity
-    x, y, z = velocity
     if symbol == key.W:
-        velocity = (x, y, z - SPEED)  # Forward
+        camera.velocity += np.array([0.0, 0.0, -SPEED])  # Forward
     elif symbol == key.A:
-        velocity = (x + SPEED, y, z)  # Left
+        camera.velocity += np.array([+SPEED, 0.0, 0.0])  # Left
     elif symbol == key.S:
-        velocity = (x, y, z + SPEED)  # Backward
+        camera.velocity += np.array([0.0, 0.0, +SPEED])  # Backward
     elif symbol == key.D:
-        velocity = (x - SPEED, y, z)  # Right
+        camera.velocity += np.array([-SPEED, 0.0, 0.0])  # Right
     elif symbol == key.SPACE:
-        velocity = (x, y - SPEED, z)  # Up
+        camera.velocity += np.array([0.0, -SPEED, 0.0])  # Up
     elif symbol == key.LSHIFT:
-        velocity = (x, y + SPEED, z)  # Down
+        camera.velocity += np.array([0.0, +SPEED, 0.0])  # Down
 
 
 app.run()
