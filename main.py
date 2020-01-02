@@ -1,14 +1,15 @@
 
-from glumpy import app, gl
-from pyglet.window import key
+from glumpy import app
+from glumpy.app.window import key
 import numpy as np
 
 from entity import Camera
-from constants import WINDOW_WIDTH, WINDOW_HEIGHT, SPEED
+from constants import WINDOW_WIDTH, WINDOW_HEIGHT
 
+app.use('pyglet')
 window = app.Window(WINDOW_WIDTH, WINDOW_HEIGHT)
 
-camera = Camera(position=np.array([0.0, 0.0, -5.0]))
+camera = Camera(position=np.array([0.0, 0.0, 0.0]))
 
 
 @window.event
@@ -19,40 +20,44 @@ def on_draw(dt):
 
 @window.event
 def on_key_press(symbol, modifiers):
+    if symbol == key.ESCAPE:
+        window.close()
+        exit()
+
     if symbol == key.W:
-        camera.velocity += np.array([0.0, 0.0, +SPEED])  # Forward
+        camera.move_forward = True
     elif symbol == key.A:
-        camera.velocity += np.array([-SPEED, 0.0, 0.0])  # Left
+        camera.move_left = True
     elif symbol == key.S:
-        camera.velocity += np.array([0.0, 0.0, -SPEED])  # Backward
+        camera.move_backward = True
     elif symbol == key.D:
-        camera.velocity += np.array([+SPEED, 0.0, 0.0])  # Right
+        camera.move_right = True
     elif symbol == key.SPACE:
-        camera.velocity += np.array([0.0, +SPEED, 0.0])  # Up
+        camera.move_up = True
     elif symbol == key.LSHIFT:
-        camera.velocity += np.array([0.0, -SPEED, 0.0])  # Down
+        camera.move_down = True
 
 
 @window.event
 def on_key_release(symbol, modifiers):
     if symbol == key.W:
-        camera.velocity += np.array([0.0, 0.0, -SPEED])  # Forward
+        camera.move_forward = False
     elif symbol == key.A:
-        camera.velocity += np.array([+SPEED, 0.0, 0.0])  # Left
+        camera.move_left = False
     elif symbol == key.S:
-        camera.velocity += np.array([0.0, 0.0, +SPEED])  # Backward
+        camera.move_backward = False
     elif symbol == key.D:
-        camera.velocity += np.array([-SPEED, 0.0, 0.0])  # Right
+        camera.move_right = False
     elif symbol == key.SPACE:
-        camera.velocity += np.array([0.0, -SPEED, 0.0])  # Up
+        camera.move_up = False
     elif symbol == key.LSHIFT:
-        camera.velocity += np.array([0.0, +SPEED, 0.0])  # Down
+        camera.move_down = False
 
 
 @window.event
 def on_mouse_motion(x, y, dx, dy):
-    camera.direction += np.array([dx, -dy]) * np.pi / 500
-    # TODO: Find a way to stop the cursor from moving off the screen
+    camera.rotation -= np.array([dy, dx, 0]) * np.pi / 500
+    camera.rotation[1] = np.clip(camera.rotation[1], -np.pi, np.pi)  # TODO: Fix this so it actually clamps the values correctly
 
 
 app.run()

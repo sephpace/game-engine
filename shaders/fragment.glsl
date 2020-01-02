@@ -18,8 +18,11 @@ uniform vec3 camera;
 //
 // point: The point to test the distance from
 float getDistance(vec3 point) {
-    vec4 sphere = vec4(0, 0, 3, 1);
-    return length(point - sphere.xyz) - sphere.w;
+    vec4 sphere = vec4(0, 0, 8, 1);
+    vec4 sphere2 = vec4(8, 0, 0, 1);
+    vec4 sphere3 = vec4(-8, 0, 0, 1);
+    vec4 sphere4 = vec4(0, 0, -8, 1);
+    return min(min(min(length(point - sphere.xyz) - sphere.w, length(point - sphere2.xyz) - sphere2.w), length(point - sphere3.xyz) - sphere3.w), length(point - sphere4.xyz) - sphere4.w);
 }
 
 
