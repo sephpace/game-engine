@@ -2,11 +2,14 @@
 from glumpy import app
 from glumpy.app.window import key
 import numpy as np
+import pygame
 
 from entity import Camera
 from constants import WINDOW_WIDTH, WINDOW_HEIGHT
 
-app.use('pyglet')
+
+# pygame.init()
+app.use('sdl')
 window = app.Window(WINDOW_WIDTH, WINDOW_HEIGHT)
 
 camera = Camera(position=np.array([0.0, 0.0, 0.0]))
